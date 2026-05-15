@@ -19,7 +19,7 @@ const actualizarProductoSchema = z.object({
   dimensiones: z.string().max(200).optional().nullable(),
   activo: z.boolean().optional(),
   categoriaIds: z.array(z.string()).optional(),
-  atributos: z.record(z.unknown()).optional(),
+  atributos: z.record(z.string(), z.unknown()).optional(),
 });
 
 export async function GET(

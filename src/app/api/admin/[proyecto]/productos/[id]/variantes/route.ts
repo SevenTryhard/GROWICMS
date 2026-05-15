@@ -9,7 +9,7 @@ import { verificarAccesoProyecto } from "@/lib/auth/permisos";
 import { respuestaError, respuestaExito } from "@/lib/api";
 
 const crearVarianteSchema = z.object({
-  atributos: z.record(z.unknown()).default({}),
+  atributos: z.record(z.string(), z.unknown()).default({}),
   precioExtra: z.number().int().min(0).default(0),
   stock: z.number().int().min(0).default(0),
   skuVariante: z.string().max(100).optional(),
@@ -17,7 +17,7 @@ const crearVarianteSchema = z.object({
 });
 
 const actualizarVarianteSchema = z.object({
-  atributos: z.record(z.unknown()).optional(),
+  atributos: z.record(z.string(), z.unknown()).optional(),
   precioExtra: z.number().int().min(0).optional(),
   stock: z.number().int().min(0).optional(),
   skuVariante: z.string().max(100).optional().nullable(),

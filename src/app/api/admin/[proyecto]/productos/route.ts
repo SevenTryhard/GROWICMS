@@ -23,7 +23,7 @@ const crearProductoSchema = z.object({
   dimensiones: z.string().max(200).optional(),
   activo: z.boolean().default(true),
   categoriaIds: z.array(z.string()).default([]),
-  atributos: z.record(z.unknown()).default({}),
+  atributos: z.record(z.string(), z.unknown()).default({}),
 });
 
 function decodificarCursor(cursor: string | null): { id: string | null; creadoEn: string | null } {

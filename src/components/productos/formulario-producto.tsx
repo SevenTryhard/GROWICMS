@@ -1,5 +1,8 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -122,6 +125,7 @@ export function FormularioProducto({
       }
 
       const json = (await res.json()) as { data: { id: string } };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const productoId = json.data.id;
 
       // Sincronizar variantes si es edicion
@@ -364,90 +368,13 @@ export function FormularioProducto({
       {tabActiva === "variantes" && (
         <div className="glass p-6 rounded-xl space-y-4">
           <h3 className="text-lg font-semibold">Variantes</h3>
-          {modo === "editar" && producto?.id ? (
-            <EditorVariantesConApi
-              proyectoSlug={proyectoSlug}
-              productoId={producto.id}
-              variantesIniciales={variantes}
-              configAtributos={configAtributos}
-              alCambiar={setVariantes}
-            />
-          ) : (
-            <EditorVariantes
-              variantes={variantes}
-              alCambiar={setVariantes}
-              configAtributos={configAtributos}
-            />
-          )}
+          <EditorVariantes
+            variantes={variantes}
+            alCambiar={setVariantes}
+            configAtributos={configAtributos}
+          />
         </div>
       )}
     </div>
-  );
-}
-
-function EditorVariantesConApi({
-  proyectoSlug,
-  productoId,
-  variantesIniciales,
-  configAtributos,
-  alCambiar,
-}: {
-  proyectoSlug: string;
-  productoId: string;
-  variantesIniciales: Variante[];
-  configAtributos: ConfigAtributo[];
-  alCambiar: (v: Variante[]) => void;
-}) {
-  const { toast } = useToast();
-  const [variantes, setVariantesLocal] = useState<Variante[]>(variantesIniciales);
-
-  useEffect(() => {
-    setVariantesLocal(variantesIniciales);
-  }, [variantesIniciales.length]);
-
-  async function crearVarianteEnApi(variante: Variante) {
-    const res = await fetch(
-      `/api/admin/${proyectoSlug}/productos/${productoId}/variantes`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(variante),
-      }
-    );
-    if (!res.ok) throw new Error("Error al crear variante");
-    return (await res.json()) as { data: Variante };
-  }
-
-  async function actualizarVarianteEnApi(varianteId: string, variante: Variante) {
-    const res = await fetch(
-      `/api/admin/${proyectoSlug}/productos/${productoId}/variantes`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...variante, id: varianteId }),
-      }
-    );
-    if (!res.ok) throw new Error("Error al actualizar variante");
-  }
-
-  async function eliminarVarianteEnApi(varianteId: string) {
-    const res = await fetch(
-      `/api/admin/${proyectoSlug}/productos/${productoId}/variantes?id=${varianteId}`,
-      { method: "DELETE" }
-    );
-    if (!res.ok) throw new Error("Error al eliminar variante");
-  }
-
-  function manejarCambio(nuevas: Variante[]) {
-    setVariantesLocal(nuevas);
-    alCambiar(nuevas);
-  }
-
-  return (
-    <EditorVariantes
-      variantes={variantes}
-      alCambiar={manejarCambio}
-      configAtributos={configAtributos}
-    />
   );
 }

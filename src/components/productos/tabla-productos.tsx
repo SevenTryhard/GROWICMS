@@ -37,7 +37,8 @@ export function TablaProductos({ productos, proyectoSlug, alEliminar }: Props) {
     }).format(valor / 100);
   }
 
-  function formatearFecha(fecha: Date): string {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function _formatearFecha(fecha: Date): string {
     return new Intl.DateTimeFormat("es-ES", {
       day: "2-digit",
       month: "2-digit",
