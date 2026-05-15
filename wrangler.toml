@@ -1,0 +1,23 @@
+name = "growicms"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "growicms-db"
+database_id = "growicms-db-id"
+
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "growicms-storage"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "growicms-cache"
+
+[vars]
+JWT_CLAVE_SECRETA = "growicms-secreta-super-segura-cambia-en-produccion"
+TWILIO_CUENTA_SID = ""
+TWILIO_AUTH_TOKEN = ""
+TWILIO_NUMERO_ORIGEN = ""

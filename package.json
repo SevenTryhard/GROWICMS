@@ -1,0 +1,45 @@
+{
+  "name": "growicms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "build:cf": "npx open-next build",
+    "deploy": "npm run build:cf && npx wrangler pages deploy .open-next/assets",
+    "preview": "npm run build:cf && npx wrangler pages dev .vercel/output/static",
+    "dev:cf": "npx wrangler pages dev -- npx next dev",
+    "lint": "eslint",
+    "db:migrate": "npx wrangler d1 execute growicms-db --local --file=drizzle/0001_initial.sql",
+    "db:migrate:remote": "npx wrangler d1 execute growicms-db --remote --file=drizzle/0001_initial.sql"
+  },
+  "dependencies": {
+    "@cloudflare/next-on-pages": "^1.13.16",
+    "@cloudflare/workers-types": "^4.20260515.1",
+    "drizzle-orm": "^0.45.2",
+    "jose": "^6.2.3",
+    "next": "^15.5.2",
+    "open-next": "^3.1.3",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "twilio": "^6.0.2",
+    "uuid": "^14.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/uuid": "^10.0.0",
+    "better-sqlite3": "^12.10.0",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.1.6",
+    "wrangler": "^4.92.0"
+  }
+}
