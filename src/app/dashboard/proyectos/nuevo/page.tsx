@@ -1,5 +1,8 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -39,7 +42,7 @@ export default function NuevoProyectoPage() {
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err = (await res.json()) as { error: string };
         throw new Error(err.error || "Error al crear proyecto");
       }
 

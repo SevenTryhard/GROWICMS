@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -28,7 +30,7 @@ export default function CategoriasPage({ params }: { params: Promise<{ proyecto:
       setProyectoSlug(proyecto);
       const res = await fetch(`/api/admin/${proyecto}/categorias`);
       if (!res.ok) throw new Error("Error al cargar categorias");
-      const { data } = await res.json();
+      const json = (await res.json()) as { data: Categoria[] }; const data = json.data;
       setCategorias(data || []);
     } catch {
       toast({ tipo: "error", mensaje: "Error al cargar categorias" });

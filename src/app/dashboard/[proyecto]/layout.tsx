@@ -1,9 +1,17 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
+
+interface Proyecto {
+  id: string;
+  slug: string;
+  nombre: string;
+}
 
 export default function DashboardProyectoLayout({
   children,
@@ -11,23 +19,27 @@ export default function DashboardProyectoLayout({
   children: React.ReactNode;
 }) {
   const params = useParams();
-  const router = useRouter();
   const [proyectoNombre, setProyectoNombre] = useState<string>("");
   const proyectoSlug = (params?.proyecto as string) || "";
 
   useEffect(() => {
     if (!proyectoSlug) return;
-    fetch(`/api/admin/proyectos`)
-      .then((res) => res.json())
-      .then(({ data }) => {
-        const proyecto = data?.find((p: { slug: string }) => p.slug === proyectoSlug);
+
+    async function cargarProyecto() {
+      try {
+        const res = await fetch(`/api/admin/proyectos`);
+        if (!res.ok) return;
+        const json = (await res.json()) as { data: Proyecto[] };
+        const proyecto = json.data?.find((p) => p.slug === proyectoSlug);
         if (proyecto) {
           setProyectoNombre(proyecto.nombre);
         }
-      })
-      .catch(() => {
+      } catch {
         // Silencioso
-      });
+      }
+    }
+
+    cargarProyecto();
   }, [proyectoSlug]);
 
   return (

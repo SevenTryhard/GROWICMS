@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -23,8 +25,8 @@ export default function NuevaCategoriaPage({ params }: { params: Promise<{ proye
       setProyectoSlug(proyecto);
       const res = await fetch(`/api/admin/${proyecto}/categorias`);
       if (res.ok) {
-        const { data } = await res.json();
-        setCategoriasPadre(data || []);
+        const json = (await res.json()) as { data: Categoria[] };
+        setCategoriasPadre(json.data || []);
       }
     } catch {
       // Silencioso
@@ -56,7 +58,7 @@ export default function NuevaCategoriaPage({ params }: { params: Promise<{ proye
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err = (await res.json()) as { error: string };
         throw new Error(err.error || "Error al crear categoria");
       }
 

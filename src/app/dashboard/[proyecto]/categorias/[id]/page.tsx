@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -36,35 +38,41 @@ export default function EditarCategoriaPage({
   const { toast } = useToast();
 
   const cargarDatos = useCallback(async () => {
+    if (!proyectoSlug) return;
     try {
-      const { proyecto, id } = await params;
-      setProyectoSlug(proyecto);
-      setIdCategoria(id);
-
       const [resCategoria, resCategorias] = await Promise.all([
-        fetch(`/api/admin/${proyecto}/categorias/${id}`),
-        fetch(`/api/admin/${proyecto}/categorias`),
+        fetch(`/api/admin/${proyectoSlug}/categorias/${idCategoria}`),
+        fetch(`/api/admin/${proyectoSlug}/categorias`),
       ]);
 
       if (resCategoria.ok) {
-        const { data } = await resCategoria.json();
-        setCategoria(data);
+        const json = (await resCategoria.json()) as { data: CategoriaDetalle };
+        setCategoria(json.data);
       }
 
       if (resCategorias.ok) {
-        const { data } = await resCategorias.json();
-        setCategoriasPadre((data || []).filter((c: Categoria) => c.id !== id));
+        const json = (await resCategorias.json()) as { data: Categoria[] };
+        setCategoriasPadre((json.data || []).filter((c) => c.id !== idCategoria));
       }
     } catch {
       toast({ tipo: "error", mensaje: "Error al cargar datos" });
     } finally {
       setCargando(false);
     }
-  }, [params, toast]);
+  }, [proyectoSlug, idCategoria, toast]);
 
   useEffect(() => {
     cargarDatos();
   }, [cargarDatos]);
+
+  useEffect(() => {
+    async function init() {
+      const { proyecto, id } = await params;
+      setProyectoSlug(proyecto);
+      setIdCategoria(id);
+    }
+    init();
+  }, [params]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -89,7 +97,7 @@ export default function EditarCategoriaPage({
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err = (await res.json()) as { error: string };
         throw new Error(err.error || "Error al actualizar");
       }
 

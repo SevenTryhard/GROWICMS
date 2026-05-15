@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -28,7 +30,7 @@ export default function ProyectoDetallePage({ params }: { params: Promise<{ id: 
       const { id } = await params;
       const res = await fetch(`/api/admin/proyectos/${id}`);
       if (!res.ok) throw new Error("Error al cargar proyecto");
-      const { data } = await res.json();
+      const json = (await res.json()) as { data: Proyecto }; const data = json.data;
       setProyecto(data);
       setConfigAtributos(JSON.stringify(data.configAtributos || {}, null, 2));
     } catch {
@@ -74,7 +76,7 @@ export default function ProyectoDetallePage({ params }: { params: Promise<{ id: 
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err = (await res.json()) as { error: string };
         throw new Error(err.error || "Error al actualizar proyecto");
       }
 

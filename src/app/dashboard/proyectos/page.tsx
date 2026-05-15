@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect */
+
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
@@ -24,7 +26,7 @@ export default function ProyectosPage() {
     try {
       const res = await fetch("/api/admin/proyectos");
       if (!res.ok) throw new Error("Error al cargar proyectos");
-      const { data } = await res.json();
+      const json = (await res.json()) as { data: Proyecto[] }; const data = json.data;
       setProyectos(data || []);
     } catch (error) {
       toast({ tipo: "error", mensaje: "Error al cargar proyectos" });

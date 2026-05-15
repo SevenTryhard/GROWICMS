@@ -18,8 +18,8 @@ const crearProyectoSchema = z.object({
     .regex(/^[a-z0-9-]+$/, "Slug solo puede contener letras minusculas, numeros y guiones"),
   descripcion: z.string().max(2000).optional(),
   moneda: z.string().min(1).max(10).default("USD"),
-  configAtributos: z.record(z.unknown()).default({}),
-  configuracion: z.record(z.unknown()).default({}),
+  configAtributos: z.record(z.string(), z.unknown()).default({}),
+  configuracion: z.record(z.string(), z.unknown()).default({}),
 });
 
 export async function GET(request: Request) {

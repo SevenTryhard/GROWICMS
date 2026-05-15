@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const NAVEGACION_GLOBAL = [
   { nombre: "Dashboard", ruta: "/dashboard", icono: "📊" },
@@ -57,12 +58,12 @@ export function Sidebar({
 
       {esContextoProyecto && (
         <div className="px-4 py-2 border-b border-borde-glass">
-          <a
+          <Link
             href="/dashboard/proyectos"
             className="text-xs text-texto-desvanecido hover:text-texto transition-colors"
           >
             ← Volver a proyectos
-          </a>
+          </Link>
         </div>
       )}
 
@@ -70,7 +71,7 @@ export function Sidebar({
         {navegacion.map((item) => {
           const activo = pathname === item.ruta || pathname?.startsWith(item.ruta + "/");
           return (
-            <a
+            <Link
               key={item.ruta}
               href={item.ruta}
               className={`flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg transition-all ${
@@ -82,7 +83,7 @@ export function Sidebar({
             >
               <span className="text-lg flex-shrink-0">{item.icono}</span>
               <span className={`text-sm ${colapsado ? "hidden" : "block"}`}>{item.nombre}</span>
-            </a>
+            </Link>
           );
         })}
       </nav>

@@ -18,8 +18,8 @@ const actualizarProyectoSchema = z.object({
     .optional(),
   descripcion: z.string().max(2000).optional().nullable(),
   moneda: z.string().min(1).max(10).optional(),
-  configAtributos: z.record(z.unknown()).optional(),
-  configuracion: z.record(z.unknown()).optional(),
+  configAtributos: z.record(z.string(), z.unknown()).optional(),
+  configuracion: z.record(z.string(), z.unknown()).optional(),
   activo: z.boolean().optional(),
 });
 
