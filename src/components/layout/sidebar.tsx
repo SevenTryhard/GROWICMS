@@ -3,20 +3,39 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
-const NAVEGACION = [
+const NAVEGACION_GLOBAL = [
   { nombre: "Dashboard", ruta: "/dashboard", icono: "📊" },
-  { nombre: "Productos", ruta: "/dashboard/productos", icono: "📦" },
-  { nombre: "Categorias", ruta: "/dashboard/categorias", icono: "🏷️" },
-  { nombre: "Atributos", ruta: "/dashboard/atributos", icono: "⚙️" },
-  { nombre: "Promociones", ruta: "/dashboard/promociones", icono: "🎁" },
-  { nombre: "Analytics", ruta: "/dashboard/analytics", icono: "📈" },
-  { nombre: "Webhooks", ruta: "/dashboard/webhooks", icono: "🔗" },
-  { nombre: "Configuracion", ruta: "/dashboard/configuracion", icono: "⚡" },
+  { nombre: "Proyectos", ruta: "/dashboard/proyectos", icono: "🗂️" },
 ];
 
-export function Sidebar({ proyectoNombre }: { proyectoNombre?: string }) {
+const NAVEGACION_PROYECTO = [
+  { nombre: "Dashboard", ruta: "", icono: "📊" },
+  { nombre: "Productos", ruta: "/productos", icono: "📦" },
+  { nombre: "Categorias", ruta: "/categorias", icono: "🏷️" },
+  { nombre: "Atributos", ruta: "/atributos", icono: "⚙️" },
+  { nombre: "Settings", ruta: "/settings", icono: "⚡" },
+  { nombre: "Promociones", ruta: "/promociones", icono: "🎁" },
+  { nombre: "Analytics", ruta: "/analytics", icono: "📈" },
+];
+
+export function Sidebar({
+  proyectoSlug,
+  proyectoNombre,
+}: {
+  proyectoSlug?: string;
+  proyectoNombre?: string;
+}) {
   const [colapsado, establecerColapsado] = useState(false);
   const pathname = usePathname();
+
+  const esContextoProyecto = !!proyectoSlug;
+
+  const navegacion = esContextoProyecto
+    ? NAVEGACION_PROYECTO.map((item) => ({
+        ...item,
+        ruta: `/dashboard/${proyectoSlug}${item.ruta}`,
+      }))
+    : NAVEGACION_GLOBAL;
 
   return (
     <aside
@@ -36,8 +55,19 @@ export function Sidebar({ proyectoNombre }: { proyectoNombre?: string }) {
         </button>
       </div>
 
+      {esContextoProyecto && (
+        <div className="px-4 py-2 border-b border-borde-glass">
+          <a
+            href="/dashboard/proyectos"
+            className="text-xs text-texto-desvanecido hover:text-texto transition-colors"
+          >
+            ← Volver a proyectos
+          </a>
+        </div>
+      )}
+
       <nav className="flex-1 overflow-y-auto py-2">
-        {NAVEGACION.map((item) => {
+        {navegacion.map((item) => {
           const activo = pathname === item.ruta || pathname?.startsWith(item.ruta + "/");
           return (
             <a
