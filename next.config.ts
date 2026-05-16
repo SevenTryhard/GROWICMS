@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: [
     "better-sqlite3",
-    "@cloudflare/next-on-pages",
     "twilio",
     "https-proxy-agent",
   ],

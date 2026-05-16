@@ -4,10 +4,9 @@ export default defineConfig({
   schema: "./src/lib/db/esquema.ts",
   out: "./drizzle",
   dialect: "sqlite",
-  driver: "d1-http",
+  driver: "turso",
   dbCredentials: {
-    accountId: process.env.CLOUDFLARE_ACCOUNT_ID!,
-    databaseId: process.env.CLOUDFLARE_D1_DATABASE_ID!,
-    token: process.env.CLOUDFLARE_D1_API_TOKEN!,
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
   },
 });

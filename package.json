@@ -5,22 +5,16 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "build:cf": "npx open-next build",
-    "deploy": "npm run build:cf && npx wrangler pages deploy .open-next/assets",
-    "preview": "npm run build:cf && npx wrangler pages dev .vercel/output/static",
-    "dev:cf": "npx wrangler pages dev -- npx next dev",
     "lint": "eslint",
-    "db:migrate": "npx wrangler d1 execute growicms-db --local --file=migrations/0001_initial.sql",
-    "db:migrate:remote": "npx wrangler d1 execute growicms-db --remote --file=migrations/0001_initial.sql",
-    "db:seed": "npx wrangler d1 execute growicms-db --local --file=migrations/0001_initial.sql"
+    "db:migrate": "npx drizzle-kit migrate",
+    "db:push": "npx drizzle-kit push",
+    "db:studio": "npx drizzle-kit studio"
   },
   "dependencies": {
-    "@cloudflare/next-on-pages": "^1.13.16",
-    "@cloudflare/workers-types": "^4.20260515.1",
+    "@libsql/client": "^0.15.0",
     "drizzle-orm": "^0.45.2",
     "jose": "^6.2.3",
     "next": "^15.5.2",
-    "open-next": "^3.1.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "twilio": "^6.0.2",
@@ -41,7 +35,6 @@
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.1.6",
-    "wrangler": "^4.92.0"
+    "vitest": "^4.1.6"
   }
 }
