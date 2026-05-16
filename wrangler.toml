@@ -6,7 +6,7 @@ pages_build_output_dir = ".vercel/output/static"
 [[d1_databases]]
 binding = "DB"
 database_name = "growicms-db"
-database_id = "growicms-db-id"
+database_id = "1778ee73-cadc-4ffe-b655-fd62a383fd06"
 
 [[r2_buckets]]
 binding = "STORAGE"
@@ -14,7 +14,7 @@ bucket_name = "growicms-storage"
 
 [[kv_namespaces]]
 binding = "CACHE"
-id = "growicms-cache"
+id = "4e78881500e94771ba9fde69db933fa3"
 
 [vars]
 JWT_CLAVE_SECRETA = "growicms-secreta-super-segura-cambia-en-produccion"
