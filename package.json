@@ -10,8 +10,9 @@
     "preview": "npm run build:cf && npx wrangler pages dev .vercel/output/static",
     "dev:cf": "npx wrangler pages dev -- npx next dev",
     "lint": "eslint",
-    "db:migrate": "npx wrangler d1 execute growicms-db --local --file=drizzle/0001_initial.sql",
-    "db:migrate:remote": "npx wrangler d1 execute growicms-db --remote --file=drizzle/0001_initial.sql"
+    "db:migrate": "npx wrangler d1 execute growicms-db --local --file=migrations/0001_initial.sql",
+    "db:migrate:remote": "npx wrangler d1 execute growicms-db --remote --file=migrations/0001_initial.sql",
+    "db:seed": "npx wrangler d1 execute growicms-db --local --file=migrations/0001_initial.sql"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
